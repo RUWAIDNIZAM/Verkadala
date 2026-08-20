@@ -8,14 +8,17 @@
     <style>
         :root {
             --bg-color: #08080a;
-            --glass-bg: rgba(255, 255, 255, 0.02);
-            --glass-border: rgba(255, 255, 255, 0.05);
+            --glass-bg: rgba(15, 15, 22, 0.35);
+            --glass-border: rgba(157, 123, 250, 0.15);
             --text-main: #f5f5f7;
             --text-muted: #86868b;
             --primary: #5865F2;
             --primary-hover: #4752C4;
             --accent: #9d7bfa;
             --online: #34c759;
+            --offline: #8e8e93;
+            --idle: #ff9f0a;
+            --dnd: #ff453a;
         }
 
         * {
@@ -26,7 +29,6 @@
             scroll-behavior: smooth;
         }
 
-        /* Apple-style smooth scrollbar */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: var(--bg-color); }
         ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 10px; }
@@ -34,6 +36,10 @@
 
         body {
             background-color: var(--bg-color);
+            background-image: url('background.jpg'); 
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
             color: var(--text-main);
             min-height: 100vh;
             display: flex;
@@ -41,15 +47,26 @@
             align-items: center;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
+            position: relative;
         }
 
-        /* Toned down, much softer ambient background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(8, 8, 10, 0.6);
+            z-index: -1;
+        }
+
         .ambient-glow {
             position: fixed;
             border-radius: 50%;
             filter: blur(160px);
             z-index: -1;
-            opacity: 0.15;
+            opacity: 0.1;
         }
         .glow-1 { top: -20%; left: -10%; width: 60vw; height: 60vw; background: #5865F2; }
         .glow-2 { bottom: -20%; right: -10%; width: 70vw; height: 70vw; background: #9d7bfa; }
@@ -61,24 +78,23 @@
             display: flex;
             flex-direction: column;
             gap: 2.5rem;
+            z-index: 1;
         }
 
-        /* Cleaner, softer Glassmorphism */
         .glass-card {
             background: var(--glass-bg);
-            backdrop-filter: blur(40px);
-            -webkit-backdrop-filter: blur(40px);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
             border: 1px solid var(--glass-border);
-            border-radius: 28px;
+            border-radius: 24px;
             padding: 2.5rem;
-            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
             transition: transform 0.4s ease, border 0.4s ease;
         }
         .glass-card:hover {
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(157, 123, 250, 0.3);
         }
 
-        /* Hero Section */
         .hero {
             text-align: center;
             display: flex;
@@ -92,7 +108,7 @@
             text-transform: uppercase;
             letter-spacing: 2px;
             color: var(--text-muted);
-            background: rgba(255, 255, 255, 0.03);
+            background: rgba(255, 255, 255, 0.04);
             padding: 0.5rem 1.2rem;
             border-radius: 20px;
             border: 1px solid var(--glass-border);
@@ -103,9 +119,10 @@
             width: 130px;
             height: 130px;
             border-radius: 35%; 
-            border: 1px solid rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
             box-shadow: 0 8px 32px rgba(0,0,0,0.4);
             margin-bottom: 0.5rem;
+            object-fit: cover;
         }
 
         .hero h1 {
@@ -120,7 +137,6 @@
             font-weight: 400;
         }
 
-        /* Smooth Apple-Style Stats Row */
         .stats-container {
             display: flex;
             gap: 1.5rem;
@@ -133,7 +149,7 @@
         .stat-box {
             background: rgba(0,0,0,0.2);
             border: 1px solid var(--glass-border);
-            border-radius: 20px;
+            border-radius: 18px;
             padding: 1.5rem;
             min-width: 160px;
             display: flex;
@@ -141,13 +157,14 @@
             align-items: center;
             justify-content: center;
             gap: 0.3rem;
+            backdrop-filter: blur(4px);
         }
 
         .stat-number {
             font-size: 2.2rem;
             font-weight: 700;
             color: #fff;
-            font-variant-numeric: tabular-nums; /* Keeps numbers from shifting horizontally */
+            font-variant-numeric: tabular-nums;
         }
 
         .stat-label {
@@ -158,7 +175,6 @@
             font-weight: 500;
         }
 
-        /* Call to Action */
         .btn-join {
             display: inline-block;
             background: var(--primary);
@@ -172,40 +188,13 @@
             width: 100%;
             max-width: 320px;
             text-align: center;
+            box-shadow: 0 4px 20px rgba(88, 101, 242, 0.4);
         }
         .btn-join:hover {
             background: var(--primary-hover);
             transform: scale(1.02);
         }
 
-        /* Upcoming Event Card */
-        .event-card {
-            background: linear-gradient(145deg, rgba(157, 123, 250, 0.08), rgba(88, 101, 242, 0.05));
-            border: 1px solid rgba(157, 123, 250, 0.2);
-            text-align: center;
-        }
-        
-        .event-card h3 {
-            color: var(--accent);
-            font-size: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 0.8rem;
-        }
-
-        .event-card h2 {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #fff;
-            margin-bottom: 0.5rem;
-        }
-
-        .event-card p {
-            color: var(--text-muted);
-            font-size: 1.1rem;
-        }
-
-        /* About Us Section */
         .about-section {
             text-align: center;
             line-height: 1.6;
@@ -222,7 +211,6 @@
             font-size: 1.1rem;
         }
 
-        /* Bot Features Section */
         .section-title {
             text-align: center;
             font-size: 2rem;
@@ -239,26 +227,28 @@
 
         .bot-card {
             background: rgba(0,0,0,0.2);
-            border: 1px solid rgba(255,255,255,0.03);
-            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 18px;
             overflow: hidden;
             display: flex;
             flex-direction: column;
+            backdrop-filter: blur(4px);
         }
 
         .bot-img-wrapper {
             width: 100%;
-            height: auto;
-            background: #000;
-            border-bottom: 1px solid rgba(255,255,255,0.03);
+            background: rgba(0,0,0,0.3);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
             display: flex;
             align-items: center;
             justify-content: center;
+            padding: 1.5rem 0;
         }
 
         .bot-img-wrapper img {
-            width: 100%;
-            height: auto; 
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
             display: block;
         }
 
@@ -280,7 +270,129 @@
             line-height: 1.5;
         }
 
-        /* Minimal Rules */
+        .roles-section {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .role-category {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .role-category h4 {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            padding-bottom: 0.4rem;
+            border-bottom: 1px solid rgba(157, 123, 250, 0.25);
+        }
+
+        .team-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .team-card {
+            background: rgba(12, 12, 18, 0.45);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 1rem 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+            backdrop-filter: blur(4px);
+        }
+        .team-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(157, 123, 250, 0.4);
+        }
+
+        .team-member-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            overflow: hidden;
+        }
+
+        .team-avatar-wrapper {
+            position: relative;
+            width: 50px;
+            height: 50px;
+            flex-shrink: 0;
+        }
+
+        .team-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .status-dot {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 2px solid var(--bg-color);
+        }
+        .status-dot.online { background: var(--online); }
+        .status-dot.idle { background: var(--idle); }
+        .status-dot.dnd { background: var(--dnd); }
+        .status-dot.offline { background: var(--offline); }
+
+        .team-info {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            gap: 0.1rem;
+        }
+
+        .team-name {
+            font-weight: 700;
+            font-size: 1rem;
+            color: #fff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .team-handle {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .team-badge {
+            background: rgba(157, 123, 250, 0.12);
+            border: 1px solid rgba(157, 123, 250, 0.35);
+            color: var(--accent);
+            padding: 0.35rem 0.8rem;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+
+        .no-members {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-style: italic;
+        }
+
         .rules-list {
             list-style: none;
             display: flex;
@@ -295,8 +407,10 @@
             font-size: 1.05rem;
             color: var(--text-muted);
             padding: 1rem 1.5rem;
-            background: rgba(0,0,0,0.15);
+            background: rgba(0,0,0,0.2);
             border-radius: 14px;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.03);
         }
 
         .rules-list li span {
@@ -304,6 +418,140 @@
             font-weight: 700;
             opacity: 0.5;
             width: 20px;
+        }
+
+        /* Notification-style Music Widget */
+        .music-widget {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            z-index: 100;
+            background: rgba(15, 15, 22, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 1rem;
+            width: 290px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            transition: all 0.3s ease;
+        }
+
+        .music-widget:hover {
+            border-color: rgba(157, 123, 250, 0.4);
+            box-shadow: 0 12px 40px rgba(157, 123, 250, 0.15);
+        }
+
+        .music-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .music-thumb {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            object-fit: cover;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .music-meta {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            gap: 0.1rem;
+        }
+
+        .music-title {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: #fff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .music-subtitle {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .music-progress-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .progress-bar-bg {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            cursor: pointer;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            width: 0%;
+            background: var(--accent);
+            border-radius: 10px;
+            transition: width 0.1s linear;
+        }
+
+        .time-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            font-variant-numeric: tabular-nums;
+        }
+
+        .music-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+        }
+
+        .control-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: var(--text-main);
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .control-btn:hover {
+            background: rgba(157, 123, 250, 0.2);
+            border-color: var(--accent);
+            transform: scale(1.08);
+        }
+
+        .control-btn.play-pause {
+            width: 40px;
+            height: 40px;
+            background: var(--accent);
+            border: none;
+            color: #000;
+        }
+
+        .control-btn.play-pause:hover {
+            background: #b59bff;
         }
 
         footer {
@@ -315,22 +563,21 @@
             opacity: 0.5;
         }
 
-        /* Fade-in Animation */
         .reveal { opacity: 0; transform: translateY(20px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
         .reveal.active { opacity: 1; transform: translateY(0); }
 
-        /* Mobile Adjustments */
         @media (max-width: 768px) {
             .glass-card { padding: 2rem 1.2rem; }
             .hero h1 { font-size: 2.5rem; }
             .bot-grid { grid-template-columns: 1fr; }
             .stat-box { flex: 1; min-width: 120px; padding: 1rem; }
             .stat-number { font-size: 1.8rem; }
+            .team-badge { display: none; }
+            .music-widget { right: 15px; bottom: 15px; width: calc(100% - 30px); max-width: 320px; }
         }
     </style>
 </head>
 <body>
-    <!-- Softer ambient background -->
     <div class="ambient-glow glow-1"></div>
     <div class="ambient-glow glow-2"></div>
 
@@ -346,7 +593,6 @@
                 <p class="tagline">A semi-active Tamil Discord server you can seek.</p>
             </div>
 
-            <!-- Apple-Style Smooth Stats -->
             <div class="stats-container">
                 <div class="stat-box">
                     <div class="stat-number">100k+</div>
@@ -365,13 +611,6 @@
             <a href="https://discord.gg/mmrzFwm6NZ" class="btn-join" target="_blank" rel="noopener noreferrer">Join the Server</a>
         </main>
 
-        <!-- Upcoming Event Section -->
-        <section class="glass-card event-card reveal">
-            <h3>Upcoming Event</h3>
-            <h2>Ban NEET vs Fair NEET</h2>
-            <p>🗓️ August 2, 2026 • Join the debate in voice chat!</p>
-        </section>
-
         <!-- About Us Section -->
         <section class="glass-card about-section reveal">
             <h3>About Us</h3>
@@ -385,7 +624,7 @@
             <div class="bot-grid">
                 <div class="bot-card">
                     <div class="bot-img-wrapper">
-                        <img src="https://cdn.discordapp.com/attachments/1498310391434842252/1530947392055152773/image.png?ex=6a676d5d&is=6a661bdd&hm=58ebc15f0a6d21e7d74bd544abcd3b8422bb676587ce43c6ef7c0a933cb69d1e&" alt="Kadala AFK System">
+                        <img src="https://media.discordapp.net/attachments/1539278535145955408/1539817245977481327/ezgif.com-resize_1.gif?ex=6a87b20f&is=6a86608f&hm=7d13da68b02fe3ceb089e1a566a6be0a4029db2c9c992248dfd7e006d5bab69f&=" alt="Kadala AFK System">
                     </div>
                     <div class="bot-content">
                         <h4>Kadala AFK</h4>
@@ -395,27 +634,17 @@
 
                 <div class="bot-card">
                     <div class="bot-img-wrapper">
-                        <img src="https://media.discordapp.net/attachments/1498310391434842252/1530947743198220409/image.png?ex=6a676db1&is=6a661c31&hm=e68f054630e175f1480ac9777a1c4060e80222e4032a8e66064d1c508351fc1a&=&format=webp&quality=lossless" alt="Anti Nuke System">
+                        <img src="https://media.discordapp.net/attachments/1539278535145955408/1539817245977481327/ezgif.com-resize_1.gif?ex=6a87b20f&is=6a86608f&hm=7d13da68b02fe3ceb089e1a566a6be0a4029db2c9c992248dfd7e006d5bab69f&=" alt="Anti Nuke System">
                     </div>
                     <div class="bot-content">
-                        <h4>Anti-Nuke System</h4>
-                        <p>Promises zero interruptions and prevents nukes from happening in our server.</p>
+                        <h4>Anti-Nuke</h4>
+                        <p>Continuously monitors The server To prevent The nuke </p>
                     </div>
                 </div>
 
                 <div class="bot-card">
                     <div class="bot-img-wrapper">
-                        <img src="https://media.discordapp.net/attachments/1498310391434842252/1530948346578079744/image.png?ex=6a676e41&is=6a661cc1&hm=c6268db3d1e2f9953309fd525809f483a422fa01092cd85f6186d9176c8f9fa5&=&format=webp&quality=lossless" alt="Anti Profanity System">
-                    </div>
-                    <div class="bot-content">
-                        <h4>Anti-Profanity</h4>
-                        <p>Continuously monitors chat for instant timeouts. Filters over 1k specialized words and combinations for zero uncomfortability.</p>
-                    </div>
-                </div>
-
-                <div class="bot-card">
-                    <div class="bot-img-wrapper">
-                        <img src="https://cdn.discordapp.com/attachments/890171606532522005/1530948690741694615/image.png?ex=6a676e93&is=6a661d13&hm=65bd33a56067d612e943c1dd6cecd0075a180de0a9a8867a713e2b9503633536&" alt="Anti Spam System">
+                        <img src="https://media.discordapp.net/attachments/1539278535145955408/1539817245977481327/ezgif.com-resize_1.gif?ex=6a87b20f&is=6a86608f&hm=7d13da68b02fe3ceb089e1a566a6be0a4029db2c9c992248dfd7e006d5bab69f&=" alt="Anti Spam System">
                     </div>
                     <div class="bot-content">
                         <h4>Anti-Spam</h4>
@@ -425,7 +654,7 @@
 
                 <div class="bot-card">
                     <div class="bot-img-wrapper">
-                        <img src="https://media.discordapp.net/attachments/1498310391434842252/1530948913690054767/image.png?ex=6a676ec8&is=6a661d48&hm=dde21661f0d2bbccd471ee2048a8c0d0c48bb15882e6cb1e66a138d8e64fe58d&=&format=webp&quality=lossless" alt="Anti Mass Ping System">
+                        <img src="https://media.discordapp.net/attachments/1539278535145955408/1539817245977481327/ezgif.com-resize_1.gif?ex=6a87b20f&is=6a86608f&hm=7d13da68b02fe3ceb089e1a566a6be0a4029db2c9c992248dfd7e006d5bab69f&=" alt="Anti Mass Ping System">
                     </div>
                     <div class="bot-content">
                         <h4>Anti-Mass Ping</h4>
@@ -445,13 +674,70 @@
             </ul>
         </section>
 
+        <!-- Server Team & Roles Section -->
+        <section class="glass-card reveal">
+            <h3 class="section-title" style="margin-bottom: 1.5rem;">Server Team</h3>
+            <div id="roles-container" class="roles-section">
+                <div class="role-category">
+                    <div class="team-list">
+                        <p class="no-members">Connecting to backend server...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <footer>
             made by ruwaidcool
         </footer>
     </div>
 
+    <!-- Notification-Style Music Player Widget -->
+    <!-- Notification-Style Music Player Widget -->
+<div class="music-widget">
+    <audio id="bg-music" preload="auto" loop>
+        <source src="music.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+        
+        <div class="music-header">
+            <!-- Replace thumbnail src if needed -->
+            <img src="https://cdn.discordapp.com/attachments/1539278535145955408/1540018133975310540/images.png?ex=6a886d27&is=6a871ba7&hm=41023321ae5505cbe7061646882d74c185f574a33a59930253df16024e3049c7&" alt="Track Art" class="music-thumb">
+            <div class="music-meta">
+                <div class="music-title">Nalaru Po</div>
+                <div class="music-subtitle">Ver Kadalai Vibe</div>
+            </div>
+        </div>
+
+        <div class="music-progress-container">
+            <div class="progress-bar-bg" id="progress-container">
+                <div class="progress-bar-fill" id="progress-fill"></div>
+            </div>
+            <div class="time-labels">
+                <span id="current-time">0:00</span>
+                <span id="total-duration">0:00</span>
+            </div>
+        </div>
+
+        <div class="music-controls">
+            <!-- Rewind 10s -->
+            <button class="control-btn" id="rewind-btn" title="Rewind 10s">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 19l-9-7 9-7v14z"></path><path d="M22 19l-9-7 9-7v14z"></path></svg>
+            </button>
+            
+            <!-- Play / Pause -->
+            <button class="control-btn play-pause" id="play-pause-btn" title="Play/Pause">
+                <svg id="play-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display: none;"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                <svg id="pause-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
+            </button>
+            
+            <!-- Forward 10s -->
+            <button class="control-btn" id="forward-btn" title="Forward 10s">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 19l9-7-9-7v14z"></path><path d="M2 19l9-7-9-7v14z"></path></svg>
+            </button>
+        </div>
+    </div>
+
     <script>
-        // Smooth scroll reveal animations
         function reveal() {
             var reveals = document.querySelectorAll(".reveal");
             for (var i = 0; i < reveals.length; i++) {
@@ -466,14 +752,13 @@
         window.addEventListener("scroll", reveal);
         reveal();
 
-        // Apple-style smooth number counting animation
         function animateValue(id, start, end, duration) {
             const obj = document.getElementById(id);
+            if (!obj) return;
             let startTimestamp = null;
             const step = (timestamp) => {
                 if (!startTimestamp) startTimestamp = timestamp;
                 const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-                // Ease out cubic function for smooth deceleration
                 const easeOut = 1 - Math.pow(1 - progress, 3);
                 obj.innerHTML = Math.floor(easeOut * (end - start) + start).toLocaleString();
                 if (progress < 1) {
@@ -485,7 +770,6 @@
             window.requestAnimationFrame(step);
         }
 
-        // Fetch Data and Trigger Animation
         async function fetchDiscordStats() {
             try {
                 const response = await fetch('https://discord.com/api/v9/invites/mmrzFwm6NZ?with_counts=true');
@@ -504,8 +788,149 @@
             }
         }
 
-        // Run fetch on load
+        async function fetchRolesData() {
+            const container = document.getElementById('roles-container');
+            try {
+                const response = await fetch('https://ss-6eg6.onrender.com/api/team');
+                const data = await response.json();
+                
+                if (data.roles && data.roles.length > 0) {
+                    container.innerHTML = '';
+                    data.roles.forEach(category => {
+                        const categoryDiv = document.createElement('div');
+                        categoryDiv.className = 'role-category';
+
+                        const title = document.createElement('h4');
+                        title.innerText = category.heading;
+                        categoryDiv.appendChild(title);
+
+                        const list = document.createElement('div');
+                        list.className = 'team-list';
+
+                        if (category.members && category.members.length > 0) {
+                            category.members.forEach(member => {
+                                const card = document.createElement('div');
+                                card.className = 'team-card';
+
+                                let badgeHtml = member.badge ? `<div class="team-badge">${member.badge}</div>` : '';
+
+                                card.innerHTML = `
+                                    <div class="team-member-left">
+                                        <div class="team-avatar-wrapper">
+                                            <img src="${member.avatar}" alt="${member.displayName}" class="team-avatar">
+                                            <div class="status-dot ${member.status}"></div>
+                                        </div>
+                                        <div class="team-info">
+                                            <div class="team-name" title="${member.displayName}">${member.displayName}</div>
+                                            <div class="team-handle">${member.username}</div>
+                                        </div>
+                                    </div>
+                                    ${badgeHtml}
+                                `;
+                                list.appendChild(card);
+                            });
+                        } else {
+                            const emptyMsg = document.createElement('p');
+                            emptyMsg.className = 'no-members';
+                            emptyMsg.innerText = 'No members found in this role.';
+                            list.appendChild(emptyMsg);
+                        }
+
+                        categoryDiv.appendChild(list);
+                        container.appendChild(categoryDiv);
+                    });
+                } else {
+                    container.innerHTML = '<p class="no-members">No team categories configured on backend.</p>';
+                }
+            } catch (error) {
+                console.error('Error fetching roles data from bot server:', error);
+                container.innerHTML = '<p class="no-members">Unable to load team list from backend server (Server is waking up, please refresh in 30 seconds).</p>';
+            }
+        }
+
+        // Notification-Style Music Player Functionality
+        const audio = document.getElementById('bg-music');
+        const playPauseBtn = document.getElementById('play-pause-btn');
+        const playIcon = document.getElementById('play-icon');
+        const pauseIcon = document.getElementById('pause-icon');
+        const rewindBtn = document.getElementById('rewind-btn');
+        const forwardBtn = document.getElementById('forward-btn');
+        const progressContainer = document.getElementById('progress-container');
+        const progressFill = document.getElementById('progress-fill');
+        const currentTimeEl = document.getElementById('current-time');
+        const totalDurationEl = document.getElementById('total-duration');
+
+        audio.volume = 0.4;
+
+        function formatTime(seconds) {
+            if (isNaN(seconds)) return "0:00";
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+        }
+
+        // Catch audio loading errors
+        audio.addEventListener('error', (e) => {
+            console.error("Error loading music.mp3. Check if the file is in the root directory and named exactly 'music.mp3'.", e);
+            totalDurationEl.innerText = "Error";
+        });
+
+        audio.addEventListener('loadedmetadata', () => {
+            totalDurationEl.innerText = formatTime(audio.duration);
+        });
+
+        audio.addEventListener('timeupdate', () => {
+            if (audio.duration) {
+                const progressPercent = (audio.currentTime / audio.duration) * 100;
+                progressFill.style.width = `${progressPercent}%`;
+                currentTimeEl.innerText = formatTime(audio.currentTime);
+            }
+        });
+
+        // Try autoplay
+        window.addEventListener('DOMContentLoaded', () => {
+            audio.load();
+            audio.play().then(() => {
+                playIcon.style.display = 'none';
+                pauseIcon.style.display = 'block';
+            }).catch(error => {
+                console.log("Autoplay blocked by browser policy. Click play to start.", error);
+                playIcon.style.display = 'block';
+                pauseIcon.style.display = 'none';
+            });
+        });
+
+        playPauseBtn.addEventListener('click', () => {
+            if (audio.paused) {
+                audio.play().then(() => {
+                    playIcon.style.display = 'none';
+                    pauseIcon.style.display = 'block';
+                }).catch(err => console.log("Play prevented:", err));
+            } else {
+                audio.pause();
+                playIcon.style.display = 'block';
+                pauseIcon.style.display = 'none';
+            }
+        });
+
+        rewindBtn.addEventListener('click', () => {
+            audio.currentTime = Math.max(0, audio.currentTime - 10);
+        });
+
+        forwardBtn.addEventListener('click', () => {
+            audio.currentTime = Math.min(audio.duration || 0, audio.currentTime + 10);
+        });
+
+        progressContainer.addEventListener('click', (e) => {
+            const rect = progressContainer.getBoundingClientRect();
+            const clickX = e.clientX - rect.left;
+            const width = rect.width;
+            if (audio.duration) {
+                audio.currentTime = (clickX / width) * audio.duration;
+            }
+        });
         fetchDiscordStats();
+        fetchRolesData();
     </script>
 </body>
 </html>
